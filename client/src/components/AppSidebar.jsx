@@ -1,4 +1,12 @@
-import { Home, BarChart3, FolderOpen, User, Settings, LogOut, Crown } from "lucide-react";
+import {
+  Home,
+  BarChart3,
+  FolderOpen,
+  User,
+  Settings,
+  LogOut,
+  Crown,
+} from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
@@ -40,12 +48,13 @@ export function AppSidebar() {
 
   return (
     <Sidebar className="border-none bg-sidebar">
-        <div className="flex items-center gap-2 px-6 py-4">
-
-          {!collapsed && (
-            <span className="text-lg font-semibold text-sidebar-foreground">constant</span>
-          )}
-        </div>
+      <div className="flex items-center gap-2 px-6 py-4">
+        {!collapsed && (
+          <span className="text-lg font-semibold text-sidebar-foreground">
+            constant
+          </span>
+        )}
+      </div>
       <SidebarContent className="bg-sidebar">
         {/* Brand */}
 
@@ -66,7 +75,9 @@ export function AppSidebar() {
                       }
                     >
                       <item.icon className="h-5 w-5" />
-                      {!collapsed && <span className="font-medium">{item.title}</span>}
+                      {!collapsed && (
+                        <span className="font-medium">{item.title}</span>
+                      )}
                     </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

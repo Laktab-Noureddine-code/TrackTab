@@ -7,9 +7,9 @@ import { MoneyFlowChart } from "@/components/dashboard/MoneyFlowChart";
 const Index = () => {
   return (
     <Layout>
-      <div className="">
+      <div className="space-y-2">
         {/* Top Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 md:gap-10 gap-6">
           <div className="lg:col-span-2 ">
             <CreditCardWidget />
           </div>
@@ -19,8 +19,8 @@ const Index = () => {
         </div>
 
         {/* Bottom Section */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 md:gap-10 gap-6">
+          <div className="lg:col-span-2">
             <TransactionsTable />
           </div>
           <div>

@@ -7,7 +7,7 @@ export function Layout({ children }) {
       <div className="flex min-h-screen w-full bg-background">
         <AppSidebar />
         <main className="flex-1">
-          <header className="flex h-16 items-center border-b bg-card px-6">
+          <header className="flex h-14 items-center  bg-card px-6">
             <SidebarTrigger className="mr-4 text-xl cursor-pointer " />
             <h1 className="text-2xl font-bold text-foreground">Dashboard</h1>
           </header>

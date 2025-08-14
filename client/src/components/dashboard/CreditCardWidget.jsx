@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MoreHorizontal, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -22,9 +22,10 @@ export function CreditCardWidget() {
           <TabsContent value="universal" className="mt-6">
             <div className="flex md:flex-row flex-col gap-4 ">
               {/* Credit Card */}
-              <div className="relative h-48 w-80 overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800 to-slate-600 p-6 text-white">
+              <div className="relative h-48 w-80 overflow-hidden shadow-2xl rounded-xl bg-gradient-to-br from-slate-800 to-slate-600 p-6 text-white">
                 {/* Card Design Elements */}
                 <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-red-400 to-orange-500 opacity-80" />
+                <div className="absolute -right-10 -top-2 h-24 w-24 rounded-full shadow-lg bg-gradient-to-br from-red-700 to-orange-500 opacity-90" />
 
                 <div className="relative z-10 flex h-full flex-col justify-between">
                   <div className="flex items-center justify-between">
