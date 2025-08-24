@@ -8,6 +8,8 @@ import Category from "./pages/Category";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
+import Analytics from "./pages/Analytics";
+import LoginForm  from "./components/auth/LoginForm";
 
 const queryClient = new QueryClient();
 
@@ -20,10 +22,11 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/dashboard" element={<Index />} />
+          <Route path="/Analytics" element={<Analytics />} />
           <Route path="/category" element={<Category />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/settings" element={<Settings />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="/login" element={<LoginForm />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

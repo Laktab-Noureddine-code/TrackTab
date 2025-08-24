@@ -26,6 +26,7 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-gradient-card: var(--gradient-card);
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -76,6 +77,23 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+
+   /* Analytics Dashboard Colors */
+    --expense-start: 24 100% 67%;    /* Orange */
+    --expense-end: 0 84% 60%;        /* Red */
+    --income-start: 210 100% 70%;    /* Blue */
+    --income-end: 260 90% 70%;       /* Purple */
+    
+    /* Chart & Dashboard Specific */
+    --chart-bg: 0 0% 98%;
+    --analytics-shadow: 0 4% 88%;
+    
+    /* Gradients */
+    --gradient-expense: linear-gradient(135deg, hsl(var(--expense-start)), hsl(var(--expense-end)));
+    --gradient-income: linear-gradient(135deg, hsl(var(--income-start)), hsl(var(--income-end)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(0 0% 99%));
+
 }
 
 .dark {

@@ -6,6 +6,7 @@ import {
   Settings,
   LogOut,
   Crown,
+  ChartPie,
 } from "lucide-react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
@@ -18,13 +19,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 const navigationItems = [
   { title: "Home", url: "/", icon: Home },
   { title: "Dashboard", url: "/dashboard", icon: BarChart3 },
+  { title: "Analytics", url: "/Analytics", icon: ChartPie  },
   { title: "Category", url: "/category", icon: FolderOpen },
   { title: "Profile", url: "/profile", icon: User },
   { title: "Settings", url: "/settings", icon: Settings },
@@ -50,9 +50,12 @@ export function AppSidebar() {
     <Sidebar className="border-none bg-sidebar">
       <div className="flex items-center gap-2 px-6 py-4">
         {!collapsed && (
-          <span className="text-lg font-semibold text-sidebar-foreground">
-            constant
-          </span>
+          <div className="flex items-center gap-2">
+            <img src="/logo.png" alt="TrackTab logo" className="h-8" />
+            <span className="text-lg font-semibold text-sidebar-foreground">
+              constant
+            </span>
+          </div>
         )}
       </div>
       <SidebarContent className="bg-sidebar">

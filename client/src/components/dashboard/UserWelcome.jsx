@@ -15,8 +15,14 @@ import {
   TrendingUp,
   TrendingDown,
 } from "lucide-react";
+import { useSelector } from "react-redux";
 
 export function UserWelcome() {
+  const incomes = useSelector((state) => state.incomes.incomes).reduce(
+    (acc, item) => acc + item.amount,
+    0
+  );
+
   return (
     <div className="space-y-1">
       {/* User Welcome */}
@@ -67,7 +73,7 @@ export function UserWelcome() {
               </div>
               <div>
                 <p className="text-sm">Income</p>
-                <p className="text-xl font-bold">$62,569</p>
+                <p className="text-xl font-bold">${incomes}</p>
               </div>
             </div>
           </CardContent>
