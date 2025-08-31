@@ -53,7 +53,7 @@ export function AppSidebar() {
           <div className="flex items-center gap-2">
             <img src="/logo.png" alt="TrackTab logo" className="h-8" />
             <span className="text-lg font-semibold text-sidebar-foreground">
-              constant
+              TrackTab
             </span>
           </div>
         )}

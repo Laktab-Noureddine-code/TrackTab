@@ -9,7 +9,9 @@ import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import NotFound from "./pages/NotFound";
 import Analytics from "./pages/Analytics";
-import LoginForm  from "./components/auth/LoginForm";
+import Login from "./pages/auth/Login";
+import ProtectedRoute from "./pages/auth/ProtectedRoute";
+import Register from "./pages/auth/Register";
 
 const queryClient = new QueryClient();
 
@@ -20,14 +22,17 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/dashboard" element={<Index />} />
-          <Route path="/Analytics" element={<Analytics />} />
-          <Route path="/category" element={<Category />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/login" element={<LoginForm />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<Index />} />
+            <Route path="/dashboard" element={<Index />} />
+            <Route path="/Analytics" element={<Analytics />} />
+            <Route path="/category" element={<Category />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
           <Route path="*" element={<NotFound />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
