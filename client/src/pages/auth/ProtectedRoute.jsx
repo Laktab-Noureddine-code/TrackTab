@@ -1,9 +1,7 @@
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
 const ProtectedRoute = () => {
-  const user = localStorage.getItem("tracktab_token");
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
+  const user =  true;
+  return user ? <Outlet /> : <Navigate to="/login" />;
 };
 export default ProtectedRoute;

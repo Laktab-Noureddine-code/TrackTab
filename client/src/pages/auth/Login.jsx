@@ -15,46 +15,52 @@ const Login = () => {
 
   const handleSubmit = () => {
     console.log("Login submitted:", formData);
-    
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-white flex">
       {/* Left side - Decorative */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-red-200 to-orange-100">
         {/* Floating shapes */}
-        <div className="absolute top-10 left-10 w-32 h-32 bg-pink-300 rounded-full opacity-70 animate-pulse"></div>
+        <div className="absolute top-10 left-10 w-32 h-32 bg-orange-300 rounded-full opacity-70 animate-pulse"></div>
         <div className="absolute top-20 right-20 w-40 h-40 bg-blue-800 rounded-full opacity-80"></div>
         <div className="absolute bottom-20 left-20 w-48 h-48 bg-teal-400 rounded-full opacity-60"></div>
-        <div className="absolute bottom-32 right-32 w-24 h-24 bg-pink-400 rounded-full opacity-50"></div>
+        <div className="absolute bottom-32 right-32 w-24 h-24 bg-red-400 rounded-full opacity-50"></div>
 
         {/* Logo and branding */}
         <div className="flex flex-col justify-center items-start pl-16 z-10">
           <div className="flex items-center mb-8">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-teal-400 rounded-lg flex items-center justify-center mr-4">
-              <div className="grid grid-cols-2 gap-1">
-                <div className="w-2 h-2 bg-white rounded-full"></div>
-                <div className="w-2 h-2 bg-white rounded-full opacity-70"></div>
-                <div className="w-2 h-2 bg-white rounded-full opacity-70"></div>
-                <div className="w-2 h-2 bg-teal-300 rounded-full"></div>
-              </div>
-            </div>
-            <span className="text-3xl font-bold text-gray-800">Fintechdb</span>
+            <img
+              src="/logo.png"
+              alt="TrackTab logo"
+              className="h-10 flex-shrink-0"
+            />
+
+            <span className="text-3xl font-bold text-gray-800">TrackTab</span>
           </div>
           <h2 className="text-4xl font-bold text-gray-800 mb-4">
             Welcome to the future of finance
           </h2>
           <p className="text-lg text-gray-600 max-w-md">
-            Join thousands of users who trust Fintechdb for their financial data management and analytics.
+            Join thousands of users who trust Fintechdb for their financial data
+            management and analytics.
           </p>
         </div>
 
         {/* Footer links */}
         <div className="absolute bottom-8 left-16 flex space-x-6 text-sm text-gray-500">
-          <a href="#" className="hover:text-gray-700 transition-colors">About</a>
-          <a href="#" className="hover:text-gray-700 transition-colors">Privacy</a>
-          <a href="#" className="hover:text-gray-700 transition-colors">Terms of use</a>
-          <a href="#" className="hover:text-gray-700 transition-colors">FAQ</a>
+          <a href="#" className="hover:text-gray-700 transition-colors">
+            About
+          </a>
+          <a href="#" className="hover:text-gray-700 transition-colors">
+            Privacy
+          </a>
+          <a href="#" className="hover:text-gray-700 transition-colors">
+            Terms of use
+          </a>
+          <a href="#" className="hover:text-gray-700 transition-colors">
+            FAQ
+          </a>
         </div>
       </div>
 
@@ -63,12 +69,19 @@ const Login = () => {
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Log in</h1>
-            <p className="text-gray-600">Welcome back! Please enter your details.</p>
+            <p className="text-gray-600">
+              Welcome back! Please enter your details.
+            </p>
           </div>
 
           {/* Email */}
           <div className="mb-6">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Email
+            </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
@@ -86,7 +99,12 @@ const Login = () => {
 
           {/* Password */}
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Password
+            </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
@@ -104,7 +122,11 @@ const Login = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
@@ -120,11 +142,19 @@ const Login = () => {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="w-4 h-4 text-teal-500 border-gray-300 rounded focus:ring-teal-500"
               />
-              <label htmlFor="remember-me" className="ml-2 text-sm text-gray-600">
+              <label
+                htmlFor="remember-me"
+                className="ml-2 text-sm text-gray-600"
+              >
                 Keep me logged in
               </label>
             </div>
-            <a href="#" className="text-sm text-teal-600 hover:text-teal-500 font-medium">Forgot password?</a>
+            <a
+              href="#"
+              className="text-sm text-teal-600 hover:text-teal-500 font-medium"
+            >
+              Forgot password?
+            </a>
           </div>
 
           {/* Submit */}

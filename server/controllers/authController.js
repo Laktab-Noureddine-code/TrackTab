@@ -4,13 +4,14 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
-  if (!name || !email || !password) {
-    res.json({ sucess: "false", message: "all fields are required" });
-  }
+  if (!name || !email || !password)
+    res.json({ success: false, message: "all fields are required" });
+
   try {
     const existingUser = await userModel.findOne(email);
     if (existingUser)
       res.json({ success: false, message: "user already registred" });
+    // we used bcrypt to hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.create({
       name,
