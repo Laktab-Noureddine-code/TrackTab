@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { AppContextProvider } from "@/context/AppContextProvider.jsx";
+
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -8,6 +10,8 @@ const Login = () => {
     email: "",
     password: "",
   });
+
+  const {backendUrl} = useContext(AppContent);
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
