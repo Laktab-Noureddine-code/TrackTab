@@ -1,20 +1,52 @@
 import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, User } from "lucide-react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { config } from "@/config";
+import { useDispatch } from "react-redux";
+import { setIsLoggedIn } from "@/redux/slices/authSlice";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
+  const dispatch = useDispatch();
+  const { backendUrl } = config;
+
+  const navigate = useNavigate();
+
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    console.log("Register submitted:", formData);
+  const handleSubmit = async () => {
+    axios.defaults.withCredentials = true;
+    try {
+      if (formData.name && formData.email && formData.password) {
+        const { data } = await axios.post(
+          `${backendUrl}/api/auth/register`,
+          formData
+        );
+        if (data.success) {
+          // setIsLoggedIn(true);
+          dispatch(setIsLoggedIn(true));
+          navigate("/");
+          toast.success("Registration successful!");
+        } else {
+          toast.error(data.message || "Registration failed. Please try again.");
+        }
+      } else {
+        toast.error("Please fill all the fields.");
+      }
+    } catch (err) {
+      console.error("Registration error:", err);
+    }
   };
 
   return (
@@ -44,16 +76,25 @@ const Register = () => {
             Welcome to the future of finance
           </h2>
           <p className="text-lg text-gray-600 max-w-md">
-            Join thousands of users who trust Fintechdb for their financial data management and analytics.
+            Join thousands of users who trust Fintechdb for their financial data
+            management and analytics.
           </p>
         </div>
 
         {/* Footer links */}
         <div className="absolute bottom-8 left-16 flex space-x-6 text-sm text-gray-500">
-          <a href="#" className="hover:text-gray-700 transition-colors">About</a>
-          <a href="#" className="hover:text-gray-700 transition-colors">Privacy</a>
-          <a href="#" className="hover:text-gray-700 transition-colors">Terms of use</a>
-          <a href="#" className="hover:text-gray-700 transition-colors">FAQ</a>
+          <a href="#" className="hover:text-gray-700 transition-colors">
+            About
+          </a>
+          <a href="#" className="hover:text-gray-700 transition-colors">
+            Privacy
+          </a>
+          <a href="#" className="hover:text-gray-700 transition-colors">
+            Terms of use
+          </a>
+          <a href="#" className="hover:text-gray-700 transition-colors">
+            FAQ
+          </a>
         </div>
       </div>
 
@@ -61,13 +102,22 @@ const Register = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center px-8 py-12">
         <div className="w-full max-w-md">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
-            <p className="text-gray-600">Get started with your free account today.</p>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+              Create Account
+            </h1>
+            <p className="text-gray-600">
+              Get started with your free account today.
+            </p>
           </div>
 
           {/* Name */}
           <div className="mb-6">
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Full Name
+            </label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
@@ -85,7 +135,12 @@ const Register = () => {
 
           {/* Email */}
           <div className="mb-6">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Email
+            </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
@@ -103,7 +158,12 @@ const Register = () => {
 
           {/* Password */}
           <div className="mb-6">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-2"
+            >
+              Password
+            </label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
@@ -121,7 +181,11 @@ const Register = () => {
                 onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
-                {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                {showPassword ? (
+                  <EyeOff className="w-5 h-5" />
+                ) : (
+                  <Eye className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>

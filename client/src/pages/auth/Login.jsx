@@ -1,6 +1,7 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
-import { AppContextProvider } from "@/context/AppContextProvider.jsx";
+import axios from "axios";
+import { config } from "../../config";
 
 
 const Login = () => {
@@ -10,15 +11,25 @@ const Login = () => {
     email: "",
     password: "",
   });
-
-  const {backendUrl} = useContext(AppContent);
+  
+  const { backendUrl } = config;
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {
-    console.log("Login submitted:", formData);
+  const handleSubmit = async () => {
+    console.log("Submitting form data:", formData);
+    axios
+      .post(`${backendUrl}/api/auth/login`, formData)
+      .then((res) => {
+        console.log(res.data);
+        alert("Login successful!");
+      })
+      .catch((err) => {
+        console.error(err);
+        alert("Login failed. Please check your credentials.");
+      });
   };
 
   return (

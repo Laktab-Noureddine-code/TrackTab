@@ -9,13 +9,19 @@ const authSlice = createSlice({
       email: "hamza@gmail.com",
     },
     token: null,
+    isLoggedIn: false,
+    loading: false,
+    backendUrl: import.meta.env.VITE_BACKEND_URL,
   },
   reducers: {
     setToken: (state, action) => {
       state.token = action.payload;
     },
+    setIsLoggedIn: (state, action) => {
+      state.isLoggedIn = action.payload;
+    },
   },
 });
 
-export const { setToken } = authSlice.actions;
+export const { setToken ,setIsLoggedIn } = authSlice.actions;
 export default authSlice.reducer;

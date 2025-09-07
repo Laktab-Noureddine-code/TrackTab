@@ -3,14 +3,11 @@ import "./index.css";
 import App from "./App.jsx";
 import { Provider } from "react-redux";
 import myStore from "./redux/store";
-import { StrictMode } from "react";
-import { AppContextProvider } from "@/context/AppContextProvider.jsx";
-
+import { ToastContainer } from "react-toastify";
 
 createRoot(document.getElementById("root")).render(
   <Provider store={myStore}>
-      <AppContextProvider>
-      <App />
-  </AppContextProvider>
-    </Provider>
+    <ToastContainer />
+    <App />
+  </Provider>
 );
