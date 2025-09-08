@@ -1,7 +1,6 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import transporter from "../config/nodemailer.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -35,15 +34,20 @@ export const register = async (req, res) => {
     });
 
     // sending welcome email
-    // const mailOptions = {
-    //   from: process.env.SENDER_EMAIL,
-    //   to: email,
-    //   subject: "Welcome to TrackTab",
-    //   text: `Welcome to TrackTab website. Your account has been created with email id: ${email}`,
-    //   // html: html(email),
-    // };
+    const mailOptions = {
+      from: "noureddine.laktab00@gmail.com",
+      to: email,
+      subject: "Welcome to TrackTab",
+      text: `Welcome to TrackTab website. Your account has been created with email id: ${email}`,
+    };
 
-    // await transporter.sendMail(mailOptions);
+    // await transporter.sendMail(mailOptions, (error, info) => {
+    //   if (error) {
+    //     console.log("Error sending email:", error);
+    //   } else {
+    //     console.log("Email sent successfully:", info.response);
+    //   }
+    // });
 
     return res.json({
       success: true,
@@ -122,5 +126,24 @@ export const logout = async (req, res) => {
   } catch (err) {
     console.log("error", err);
     res.status(500).json({ success: false, message: e });
+  }
+};
+
+export const getUser = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      res.status(404).json({ success: false, message: "no token found" });
+    }
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    const user = await userModel.findById(decoded.id).select("-password");
+
+    if (!user) {
+      res.status(404).json({ success: false, message: "user not found" });
+    }
+
+    res.status(200).json({ success: true, user });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err });
   }
 };
