@@ -19,6 +19,11 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { setIsLoggedIn } from "@/redux/slices/authSlice";
+import { config } from "@/config";
 
 const navigationItems = [
   { title: "Home", url: "/", icon: Home },
@@ -31,6 +36,7 @@ const navigationItems = [
 
 export function AppSidebar() {
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const isActive = (path) => {
     if (path === "/") {
@@ -39,9 +45,17 @@ export function AppSidebar() {
     return location.pathname === path;
   };
 
-  const handleLogout = () => {
-    // Handle logout logic here
-    console.log("Logout clicked");
+  const handleLogout = async () => {
+    const backendUrl = config.backendUrl;
+    axios.defaults.withCredentials = true;
+    try {
+      const { data } = await axios.post(backendUrl + "/api/auth/logout");
+      if (data.success) {
+        dispatch(setIsLoggedIn(false));
+      }
+    } catch (err) {
+      toast.error(err);
+    }
   };
 
   return (
@@ -49,7 +63,11 @@ export function AppSidebar() {
       {/* Brand/Logo Section */}
       <div className="flex items-center justify-center px-6 py-4 group-data-[collapsible=icon]:px-2">
         <div className="flex items-center gap-2 group-data-[collapsible=icon]:gap-0">
-          <img src="/logo.png" alt="TrackTab logo" className="h-8 flex-shrink-0" />
+          <img
+            src="/logo.png"
+            alt="TrackTab logo"
+            className="h-8 flex-shrink-0"
+          />
           <span className="text-lg font-semibold text-sidebar-foreground group-data-[collapsible=icon]:hidden">
             TrackTab
           </span>
@@ -100,7 +118,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>
-      
+
       <SidebarRail />
     </Sidebar>
   );

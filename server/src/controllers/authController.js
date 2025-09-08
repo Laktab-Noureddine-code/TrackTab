@@ -28,8 +28,9 @@ export const register = async (req, res) => {
       httpOnly: true,
       // true in production
       secure: process.env.NODE_ENV === "production",
-      //
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      secure: false,
+      // sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      sameSite: "lax",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
 
@@ -94,7 +95,8 @@ export const login = async (req, res) => {
     res.cookie("token", login_jwt, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      // sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
 
@@ -119,7 +121,8 @@ export const logout = async (req, res) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      // sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
+      sameSite: "lax",
       maxAge: 24 * 60 * 60 * 1000,
     });
     res.status(200).json({ success: true, message: "Logged out" });
@@ -135,7 +138,7 @@ export const getUser = async (req, res) => {
     if (!token) {
       res.status(404).json({ success: false, message: "no token found" });
     }
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await userModel.findById(decoded.id).select("-password");
 
     if (!user) {

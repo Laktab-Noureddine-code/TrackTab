@@ -2,7 +2,10 @@ import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import axios from "axios";
 import { config } from "../../config";
-
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { setIsLoggedIn } from "@/redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -11,7 +14,9 @@ const Login = () => {
     email: "",
     password: "",
   });
-  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const { backendUrl } = config;
 
   const handleInputChange = (e) => {
@@ -19,17 +24,19 @@ const Login = () => {
   };
 
   const handleSubmit = async () => {
-    console.log("Submitting form data:", formData);
-    axios
-      .post(`${backendUrl}/api/auth/login`, formData)
-      .then((res) => {
-        console.log(res.data);
-        alert("Login successful!");
-      })
-      .catch((err) => {
-        console.error(err);
-        alert("Login failed. Please check your credentials.");
-      });
+    try {
+      const { data } = await axios.post(`${backendUrl}/api/auth/login`, formData);
+      console.log(data);
+      if (data.success && data.user) {
+        dispatch(setIsLoggedIn(true));
+        navigate("/");
+        toast.success("Logged in successfuly");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (err) {
+      toast.error(err);
+    }
   };
 
   return (

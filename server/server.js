@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Router } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
@@ -10,6 +10,8 @@ import connectDb from "./src/config/mongodb.js";
 dotenv.config();
 // *1. connect to database
 connectDb();
+
+const router = express.Router()
 
 // create app server
 // *2. creation d'une application express

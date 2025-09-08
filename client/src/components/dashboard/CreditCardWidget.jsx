@@ -2,8 +2,10 @@ import { Card, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MoreHorizontal, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useSelector } from "react-redux";
 
 export function CreditCardWidget() {
+  const {user ,loading} = useSelector((state) => state.auth);
 
   return (
     <Card className="w-full" noBorder={true}>
@@ -41,7 +43,7 @@ export function CreditCardWidget() {
                     <div className="mb-4 font-mono text-lg tracking-wider">
                       5986 4855 7856 4956
                     </div>
-                    <div className="text-sm font-medium">Jerome Bell</div>
+                    <div className="text-sm font-medium">{user?.name}</div>
                   </div>
                 </div>
               </div>

@@ -18,6 +18,7 @@ import {
 import { useSelector } from "react-redux";
 
 export function UserWelcome() {
+  const {user} = useSelector((state) => state.auth);
   const incomes = useSelector((state) => state.incomes.incomes).reduce(
     (acc, item) => acc + item.amount,
     0
@@ -34,7 +35,7 @@ export function UserWelcome() {
             </Avatar>
             <div>
               <p className="text-sm text-muted-foreground">Welcome back,</p>
-              <h3 className="font-semibold text-xl">Jerome Bell</h3>
+              <h3 className="font-semibold text-xl">{user?.name}</h3>
             </div>
           </div>
         </CardContent>

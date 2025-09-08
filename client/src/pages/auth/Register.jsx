@@ -6,6 +6,7 @@ import { toast } from "react-toastify";
 import { config } from "@/config";
 import { useDispatch } from "react-redux";
 import { setIsLoggedIn } from "@/redux/slices/authSlice";
+axios.defaults.withCredentials = true;
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +27,6 @@ const Register = () => {
   };
 
   const handleSubmit = async () => {
-    axios.defaults.withCredentials = true;
     try {
       if (formData.name && formData.email && formData.password) {
         const { data } = await axios.post(
@@ -34,7 +34,6 @@ const Register = () => {
           formData
         );
         if (data.success) {
-          // setIsLoggedIn(true);
           dispatch(setIsLoggedIn(true));
           navigate("/");
           toast.success("Registration successful!");
