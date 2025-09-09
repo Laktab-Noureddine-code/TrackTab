@@ -1,17 +1,15 @@
-import express, { Router } from "express";
+import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import mongoose from "mongoose";
-import authRouter from "./src/routes/authRouter.js";
 import connectDb from "./src/config/mongodb.js";
+import cardRouter from "./src/routes/cardRouter.js";
+import authRouter from "./src/routes/authRouter.js";
 
 
 dotenv.config();
 // *1. connect to database
 connectDb();
-
-const router = express.Router()
 
 // create app server
 // *2. creation d'une application express
@@ -29,6 +27,7 @@ app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // Api routes
 app.use("/api/auth", authRouter);
+app.use("/api/card", cardRouter);
 
 
 // *4. demarrer le serveur
