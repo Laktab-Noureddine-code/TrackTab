@@ -14,11 +14,13 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Register from "./pages/auth/Register";
 import useAuth from "./hooks/useAuth";
 import PublicRoutes from "./routes/PublicRoutes";
+import useFetchCards from "./hooks/useFetchCards";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   useAuth();
+  useFetchCards()
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

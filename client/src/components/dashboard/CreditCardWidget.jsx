@@ -3,26 +3,39 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MoreHorizontal, CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from "react-redux";
+import { useState } from "react";
+import { format } from "@/helpers/balanceFormat";
+import { CardActions } from "./CardActions";
 
 export function CreditCardWidget() {
-  const {user ,loading} = useSelector((state) => state.auth);
+  const { user } = useSelector((state) => state.auth);
+  const cards = useSelector((state) => state.cards.cards);
+  const [selectedCard, setSelectedCard] = useState(cards[0]);
 
   return (
     <Card className="w-full" noBorder={true}>
       <CardHeader className="pb-2">
-        <Tabs defaultValue="universal" className="w-full">
+        <Tabs defaultValue={selectedCard?.name} className="w-full">
           <div className="flex items-center justify-between">
             <TabsList className="grid w-full max-w-sm grid-cols-3">
-              <TabsTrigger value="universal">Universal card</TabsTrigger>
-              <TabsTrigger value="silver">Silver</TabsTrigger>
-              <TabsTrigger value="platinum">Platinum</TabsTrigger>
+              {cards.map((card, index) => (
+                <TabsTrigger
+                  key={index}
+                  onClick={() => setSelectedCard(card)}
+                  className="cursor-pointer"
+                  value={card.name}
+                >
+                  {card.name}
+                </TabsTrigger>
+              ))}
             </TabsList>
-            <Button variant="ghost" size="icon">
+            {/* <Button variant="ghost" size="icon">
               <MoreHorizontal className="h-4 w-4" />
-            </Button>
+            </Button> */}
+            <CardActions/>
           </div>
 
-          <TabsContent value="universal" className="mt-6">
+          <TabsContent value={selectedCard?.name} className="mt-6">
             <div className="flex md:flex-row flex-col gap-4 ">
               {/* Credit Card */}
               <div className="relative h-48 w-80 overflow-hidden shadow-2xl rounded-xl bg-gradient-to-br from-slate-800 to-slate-600 p-6 text-white">
@@ -41,7 +54,7 @@ export function CreditCardWidget() {
 
                   <div>
                     <div className="mb-4 font-mono text-lg tracking-wider">
-                      5986 4855 7856 4956
+                      {format(selectedCard?.balance)}
                     </div>
                     <div className="text-sm font-medium">{user?.name}</div>
                   </div>
