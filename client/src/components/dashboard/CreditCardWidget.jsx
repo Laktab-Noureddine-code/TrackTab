@@ -1,7 +1,6 @@
 import { Card, CardHeader } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MoreHorizontal, CreditCard } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { CreditCard } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import { format } from "@/helpers/balanceFormat";
@@ -11,6 +10,67 @@ export function CreditCardWidget() {
   const { user } = useSelector((state) => state.auth);
   const cards = useSelector((state) => state.cards.cards);
   const [selectedCard, setSelectedCard] = useState(cards[0]);
+
+  // Array of 9 different card designs
+  const cardDesigns = {
+    blue: {
+      background: "bg-gradient-to-br from-blue-600 to-blue-800",
+      accent1: "from-blue-400 to-cyan-500",
+      accent2: "from-blue-700 to-cyan-500",
+      textColor: "text-white"
+    },
+    purple: {
+      background: "bg-gradient-to-br from-purple-600 to-pink-600",
+      accent1: "from-purple-400 to-pink-500",
+      accent2: "from-purple-700 to-pink-500",
+      textColor: "text-white"
+    },
+    orange: {
+      background: "bg-gradient-to-br from-orange-500 to-red-500",
+      accent1: "from-orange-400 to-red-400",
+      accent2: "from-orange-600 to-red-600",
+      textColor: "text-white"
+    },
+    black: {
+      background: "bg-gradient-to-br from-gray-800 to-gray-900",
+      accent1: "from-gray-600 to-gray-700",
+      accent2: "from-gray-700 to-gray-800",
+      textColor: "text-white"
+    },
+    pink: {
+      background: "bg-gradient-to-br from-pink-500 to-rose-500",
+      accent1: "from-pink-400 to-rose-400",
+      accent2: "from-pink-600 to-rose-600",
+      textColor: "text-white"
+    },
+    teal: {
+      background: "bg-gradient-to-br from-teal-600 to-cyan-600",
+      accent1: "from-teal-400 to-cyan-400",
+      accent2: "from-teal-700 to-cyan-700",
+      textColor: "text-white"
+    },
+    light: {
+      background: "bg-gradient-to-br from-blue-100 to-indigo-200",
+      accent1: "from-blue-300 to-indigo-400",
+      accent2: "from-blue-400 to-indigo-500",
+      textColor: "text-gray-800"
+    },
+    green: {
+      background: "bg-gradient-to-br from-green-600 to-emerald-600",
+      accent1: "from-green-400 to-emerald-400",
+      accent2: "from-green-700 to-emerald-700",
+      textColor: "text-white"
+    },
+    dark: {
+      background: "bg-gradient-to-br from-slate-800 to-slate-600",
+      accent1: "from-red-400 to-orange-500",
+      accent2: "from-red-700 to-orange-500",
+      textColor: "text-white"
+    }
+  };
+
+  // Get the current card design or fallback to default (dark)
+  const currentDesign = cardDesigns[selectedCard?.design] || cardDesigns.dark;
 
   return (
     <Card className="w-full" noBorder={true}>
@@ -29,19 +89,16 @@ export function CreditCardWidget() {
                 </TabsTrigger>
               ))}
             </TabsList>
-            {/* <Button variant="ghost" size="icon">
-              <MoreHorizontal className="h-4 w-4" />
-            </Button> */}
-            <CardActions/>
+            <CardActions />
           </div>
 
           <TabsContent value={selectedCard?.name} className="mt-6">
             <div className="flex md:flex-row flex-col gap-4 ">
-              {/* Credit Card */}
-              <div className="relative h-48 w-80 overflow-hidden shadow-2xl rounded-xl bg-gradient-to-br from-slate-800 to-slate-600 p-6 text-white">
+              {/* Credit Card with Dynamic Design */}
+              <div className={`relative h-48 w-80 overflow-hidden shadow-2xl rounded-xl ${currentDesign.background} p-6 ${currentDesign.textColor}`}>
                 {/* Card Design Elements */}
-                <div className="absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br from-red-400 to-orange-500 opacity-80" />
-                <div className="absolute -right-10 -top-2 h-24 w-24 rounded-full shadow-lg bg-gradient-to-br from-red-700 to-orange-500 opacity-90" />
+                <div className={`absolute -right-8 -top-8 h-32 w-32 rounded-full bg-gradient-to-br ${currentDesign.accent1} opacity-80`} />
+                <div className={`absolute -right-10 -top-2 h-24 w-24 rounded-full shadow-lg bg-gradient-to-br ${currentDesign.accent2} opacity-90`} />
 
                 <div className="relative z-10 flex h-full flex-col justify-between">
                   <div className="flex items-center justify-between">
@@ -54,7 +111,7 @@ export function CreditCardWidget() {
 
                   <div>
                     <div className="mb-4 font-mono text-lg tracking-wider">
-                      {format(selectedCard?.balance)}
+                      {selectedCard?.balance && format(selectedCard?.balance)}
                     </div>
                     <div className="text-sm font-medium">{user?.name}</div>
                   </div>

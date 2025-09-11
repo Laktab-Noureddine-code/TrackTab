@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import axios from "axios";
-import { config } from "../../config";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setIsLoggedIn } from "@/redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import { config } from "@/config";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -17,7 +17,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const { backendUrl } = config;
+  const backendUrl  = config.backendUrl;
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });

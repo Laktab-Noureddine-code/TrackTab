@@ -8,12 +8,54 @@ import {
 import { MoreHorizontal } from "lucide-react";
 import { useState } from "react";
 import AddCard from "./cardActions/AddCard.jsx";
+import axios from "axios";
+import { config } from "@/config.js";
+import { useDispatch, useSelector } from "react-redux";
+import { addCard } from "@/redux/slices/cardsSlice.js";
 
 export function CardActions() {
   const [isAddOpen, setIsAddOpen] = useState(false);
-  const handleAddCard = async()=>{
-    
-  }
+  const dispatch = useDispatch();
+  const cards = useSelector((state) => state.cards.cards);
+  const handleAddCard = async (formData) => {
+    axios.defaults.withCredentials = true;
+    const backendUrl = config.backendUrl;
+
+    try {
+      // Here you would typically make an API call to save the card
+      // await api.addCard(formData);
+      if (cards.find((c) => c.name === formData.name)) {
+        alert("name exists");
+      } else {
+        const { data } = await axios.post(backendUrl + "/api/card/add", {
+          name: formData.name,
+          balance: formData.balance,
+          type: formData.type,
+          currency: formData.currency,
+          design: formData.design,
+        });
+        if (data.success) {
+          dispatch(addCard(data.card));
+          setIsAddOpen(false);
+        } else {
+          console.log("error");
+        }
+      }
+      // Close the dialog
+    } catch (error) {
+      console.error("Error adding card:", error);
+      alert("Failed to add card. Please try again.");
+    }
+  };
+
+  const handleOpenDialog = () => {
+    setIsAddOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsAddOpen(false);
+  };
+
   return (
     <>
       <DropdownMenu>
@@ -25,7 +67,7 @@ export function CardActions() {
         <DropdownMenuContent align="end">
           <DropdownMenuItem
             className="cursor-pointer"
-            onClick={() => setIsAddOpen(true)}
+            onClick={handleOpenDialog}
           >
             ➕ Add Card
           </DropdownMenuItem>
@@ -49,9 +91,10 @@ export function CardActions() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
+
       <AddCard
-        isOpen={isAddOpen}
-        onClose={() => setIsAddOpen(false)}
+        open={isAddOpen}
+        onClose={handleCloseDialog}
         onSubmit={handleAddCard}
       />
     </>

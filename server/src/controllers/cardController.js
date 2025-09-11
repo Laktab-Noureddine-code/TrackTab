@@ -1,7 +1,7 @@
 import cardModel from "../models/cardModel.js";
 
 export const addCard = async (req, res) => {
-  const { name, balance, type } = req.body;
+  const { name, balance, type, currency, design } = req.body;
   const userId = req.user.id;
   if (!userId || !name || !balance || !type) {
     res
@@ -10,7 +10,14 @@ export const addCard = async (req, res) => {
   }
 
   try {
-    const card = await cardModel.create({ userId, name, balance, type });
+    const card = await cardModel.create({
+      userId,
+      name,
+      balance,
+      type,
+      currency,
+      design,
+    });
     res.status(200).json({ success: true, card });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -20,7 +27,7 @@ export const addCard = async (req, res) => {
 export const updateCard = async (req, res) => {
   const cardId = req.params.id;
   const userId = req.user.id;
-  const { name, balance, type } = req.body;
+  const { name, balance, type, currency, design } = req.body;
   if (!userId || !name || !balance || !type) {
     res
       .status(400)
@@ -35,6 +42,8 @@ export const updateCard = async (req, res) => {
         name,
         balance,
         type,
+        currency,
+        design,
       },
       {
         new: true,
