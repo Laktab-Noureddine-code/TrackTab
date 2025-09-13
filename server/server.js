@@ -5,17 +5,17 @@ import dotenv from "dotenv";
 import connectDb from "./src/config/mongodb.js";
 import cardRouter from "./src/routes/cardRouter.js";
 import authRouter from "./src/routes/authRouter.js";
-
+import categrySeeder from "./src/seeds/categrySeeder.js";
 
 dotenv.config();
 // *1. connect to database
 connectDb();
+categrySeeder();
 
 // create app server
 // *2. creation d'une application express
 const app = express();
 const PORT = process.env.PORT || 8000;
-
 
 // *3. ajoute des middlewares
 app.use(express.json());
@@ -28,7 +28,6 @@ app.use(cors({ origin: allowedOrigins, credentials: true }));
 // Api routes
 app.use("/api/auth", authRouter);
 app.use("/api/card", cardRouter);
-
 
 // *4. demarrer le serveur
 app.listen(PORT, () => {
