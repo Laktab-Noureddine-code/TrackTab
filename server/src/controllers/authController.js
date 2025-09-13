@@ -1,16 +1,20 @@
 import userModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import categrySeeder from "../seeds/categrySeeder.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
-  if (!name || !email || !password)
-    res.json({ success: false, message: "all fields are required" });
+  if (!name || !email || !password) {
+    return res.json({ success: false, message: "all fields are required" });
+  }
 
   try {
     const existingUser = await userModel.findOne({ email });
-    if (existingUser)
-      res.json({ success: false, message: "user already registred" });
+    if (existingUser) {
+      return res.json({ success: false, message: "user already registred" });
+    }
+
     // we used bcrypt to hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await userModel.create({
@@ -18,6 +22,7 @@ export const register = async (req, res) => {
       email,
       password: hashedPassword,
     });
+    categrySeeder(user._id);
 
     // generate jwt token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {

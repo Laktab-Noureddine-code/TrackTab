@@ -9,13 +9,18 @@ const defaultCategories = [
   { name: "Freelance", type: "income", icon: "Laptop" },
 ];
 
-async function categrySeeder() {
+async function categrySeeder(userId) {
   try {
-    const count = await Category.countDocuments();
+    const count = await categoryModel.countDocuments({ userId });
     if (count > 0) {
       return;
     }
-    await categoryModel.insertMany(defaultCategories);
+    const categoriesWithUser = defaultCategories.map((cat) => ({
+      ...cat,
+      userId,
+    }));
+
+    await categoryModel.insertMany(categoriesWithUser);
     console.log("Categories seeded successfully");
   } catch (err) {
     console.error("Error seeding categories:", err);
