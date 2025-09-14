@@ -7,6 +7,7 @@ import cardRouter from "./src/routes/cardRouter.js";
 import authRouter from "./src/routes/authRouter.js";
 import transactionRouter from "./src/routes/transactionRouter.js";
 import categoryRouter from "./src/routes/categoryRouter.js";
+import userRouter from "./src/routes/userRouter.js";
 
 dotenv.config();
 // *1. connect to database
@@ -26,6 +27,7 @@ const allowedOrigins = [process.env.CLIENT_URL];
 app.use(cors({ origin: allowedOrigins, credentials: true }));
 
 // Api routes
+app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/card", cardRouter);
 app.use("/api/transaction", transactionRouter);

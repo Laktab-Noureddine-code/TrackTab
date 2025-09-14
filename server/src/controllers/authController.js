@@ -23,6 +23,12 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
     categrySeeder(user._id);
+    // return user without password
+    const userWithoutPassword = {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    };
 
     // generate jwt token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -58,7 +64,7 @@ export const register = async (req, res) => {
     return res.json({
       success: true,
       message: "User registered successfully",
-      user,
+      user : userWithoutPassword,
     });
   } catch (error) {
     res.json({ success: false, message: error });
@@ -134,24 +140,5 @@ export const logout = async (req, res) => {
   } catch (err) {
     console.log("error", err);
     res.status(500).json({ success: false, message: e });
-  }
-};
-
-export const getUser = async (req, res) => {
-  try {
-    const token = req.cookies.token;
-    if (!token) {
-      res.status(404).json({ success: false, message: "no token found" });
-    }
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await userModel.findById(decoded.id).select("-password");
-
-    if (!user) {
-      res.status(404).json({ success: false, message: "user not found" });
-    }
-
-    res.status(200).json({ success: true, user });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err });
   }
 };

@@ -1,9 +1,10 @@
 import express from "express";
-import { addTransaction } from "../controllers/transactionController.js";
+import { addTransaction, getTransactions } from "../controllers/transactionController.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 
 const transactionRouter = express.Router();
 
-transactionRouter.post("/add",authMiddleware ,addTransaction);
+transactionRouter.post("/:id/add",authMiddleware ,addTransaction);
+transactionRouter.get("/:id/all",authMiddleware ,getTransactions);
 
 export default transactionRouter;
