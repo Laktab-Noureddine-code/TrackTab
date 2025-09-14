@@ -7,10 +7,10 @@ export const addTransaction = async (req, res) => {
   try {
     const cardId = req.params.id;
     const userId = req.user.id;
-    const { type, amount, description, date, categoryId } = req.body;
+    const { name, type, amount, description, date, categoryId } = req.body;
     const category = await categoryModel.findById(categoryId);
     const card = await cardModel.findOne({ _id: cardId, userId });
-    if (!type || amount || description || date || categoryId) {
+    if (!name || !type || !amount || !categoryId) {
       return res
         .status(400)
         .json({ success: false, message: "all fields required" });
@@ -42,6 +42,36 @@ export const addTransaction = async (req, res) => {
   }
 };
 
+export const updateTransactions = async (req, res) => {
+  try {
+    const transactionId = req.params.id;
+    const userId = req.user.id;
+    const { name, type, amount, categoryId } = req.body;
+    if (!name || !type || !amount || !categoryId) {
+      return res
+        .status(400)
+        .json({ success: false, message: "all fields required" });
+    }
+    const updatedTransaction = await transactionModel.findByIdAndUpdate(
+      { _id: transactionId },
+      { name, type, amount, categoryId },
+      { new: true }
+    );
+    if (!updatedTransaction) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Transaction not found" });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Transaction updated",
+      transaction: updatedTransaction,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message, success: false });
+  }
+};
+
 export const getTransactions = async (req, res) => {
   try {
     const cardId = req.params.id;
@@ -54,6 +84,33 @@ export const getTransactions = async (req, res) => {
     }
     const transactions = await transactionModel.find({ cardId });
     res.status(200).json({ success: true, transactions });
+  } catch (err) {
+    res.status(500).json({ message: serverErrorMessage, success: false });
+  }
+};
+
+export const deleteTransaction = async (req, res) => {
+  try {
+    const transactionId = req.params.id;
+    const userId = req.user.id;
+    const transaction = await transactionModel.findById(transactionId);
+    if (!transaction) {
+      return res.status(404).json({
+        success: false,
+        message: "Transaction not found",
+      });
+    }
+    const card = await cardModel.findOne({ _id: transaction.cardId, userId });
+    if (!card) {
+      return res.status(403).json({
+        success: false,
+        message: "Not authorized to delete this transaction",
+      });
+    }
+    await transactionModel.findByIdAndDelete(transactionId);
+    res
+      .status(200)
+      .json({ success: true, message: "Transaction deleted successfully" });
   } catch (err) {
     res.status(500).json({ message: serverErrorMessage, success: false });
   }

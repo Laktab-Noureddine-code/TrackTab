@@ -1,4 +1,5 @@
 import cardModel from "../models/cardModel.js";
+import { transactionModel } from "../models/transactionModel.js";
 
 export const addCard = async (req, res) => {
   const { name, balance, type, currency, design } = req.body;
@@ -83,6 +84,7 @@ export const deleteCard = async (req, res) => {
 
     // 3. delete the card
     await cardModel.findByIdAndDelete(cardId);
+    await transactionModel.deleteMany({ cardId: cardId });
 
     res.status(201).json({
       success: true,
