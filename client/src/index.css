@@ -1,9 +1,12 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-money: "Roboto", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -42,7 +45,14 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@layer components {
+  .rounded-icon {
+    @apply p-1 border border-gray-100 rounded-sm;
+  }
+}
+
 :root {
+  --money-font: "Roboto", sans-serif;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -78,22 +88,28 @@
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
 
+  /* Analytics Dashboard Colors */
+  --expense-start: 24 100% 67%; /* Orange */
+  --expense-end: 0 84% 60%; /* Red */
+  --income-start: 210 100% 70%; /* Blue */
+  --income-end: 260 90% 70%; /* Purple */
 
-   /* Analytics Dashboard Colors */
-    --expense-start: 24 100% 67%;    /* Orange */
-    --expense-end: 0 84% 60%;        /* Red */
-    --income-start: 210 100% 70%;    /* Blue */
-    --income-end: 260 90% 70%;       /* Purple */
-    
-    /* Chart & Dashboard Specific */
-    --chart-bg: 0 0% 98%;
-    --analytics-shadow: 0 4% 88%;
-    
-    /* Gradients */
-    --gradient-expense: linear-gradient(135deg, hsl(var(--expense-start)), hsl(var(--expense-end)));
-    --gradient-income: linear-gradient(135deg, hsl(var(--income-start)), hsl(var(--income-end)));
-    --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(0 0% 99%));
+  /* Chart & Dashboard Specific */
+  --chart-bg: 0 0% 98%;
+  --analytics-shadow: 0 4% 88%;
 
+  /* Gradients */
+  --gradient-expense: linear-gradient(
+    135deg,
+    hsl(var(--expense-start)),
+    hsl(var(--expense-end))
+  );
+  --gradient-income: linear-gradient(
+    135deg,
+    hsl(var(--income-start)),
+    hsl(var(--income-end))
+  );
+  --gradient-card: linear-gradient(145deg, hsl(var(--card)), hsl(0 0% 99%));
 }
 
 .dark {
@@ -138,4 +154,3 @@
     @apply bg-background text-foreground;
   }
 }
-

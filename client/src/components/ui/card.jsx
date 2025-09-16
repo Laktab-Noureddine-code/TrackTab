@@ -11,7 +11,7 @@ function Card({
     <div
       data-slot="card"
       className={cn(
-        `bg-card text-card-foreground flex flex-col gap-2 rounded-md py-2 ${noBorder ? "bg-[#FAFAFA]" : "border border-gray-100  shadow-sm"}`,
+        `bg-card text-card-foreground flex flex-col gap-2 rounded-md py-2 ${noBorder ? "bg-gray-50" : "border border-gray-100  shadow-sm"}`,
         className
       )}
       {...props} />

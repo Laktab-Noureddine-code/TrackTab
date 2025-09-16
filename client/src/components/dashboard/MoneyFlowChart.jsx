@@ -27,11 +27,13 @@ const data = [
 
 export function MoneyFlowChart() {
   return (
-    <div>
-      <div className="flex justify-between">
-        <h3 className="mb-4 text-xl text-gray-700 font-semibold">Money flow</h3>
-      </div>
-      <Card noBorder={true}>
+    <div className="">
+      <Card noBorder={true} className="bg-white">
+        <div className="flex justify-between ">
+          <h3 className="mb-4 text-xl text-gray-700 font-semibold">
+            Money flow
+          </h3>
+        </div>
         <CardHeader className="flex flex-row items-center justify-between">
           <div className="flex items-center gap-2">
             <Select defaultValue="aug">

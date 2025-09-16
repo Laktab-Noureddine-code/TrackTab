@@ -12,16 +12,10 @@ import {
   Stack,
 } from "@mui/material";
 import { toast } from "react-toastify";
+import { currencies } from "@/data/currencies";
 
 function AddCardRight({ form, setForm, onSubmit, onClose }) {
-  const currencies = [
-    { value: "USD", label: "US Dollar (USD)", symbol: "$" },
-    { value: "EUR", label: "Euro (EUR)", symbol: "€" },
-    { value: "GBP", label: "British Pound (GBP)", symbol: "£" },
-    { value: "MAD", label: "Moroccan Dirham (MAD)", symbol: "MAD" },
-    { value: "CAD", label: "Canadian Dollar (CAD)", symbol: "C$" },
-    { value: "JPY", label: "Japanese Yen (JPY)", symbol: "¥" },
-  ];
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
