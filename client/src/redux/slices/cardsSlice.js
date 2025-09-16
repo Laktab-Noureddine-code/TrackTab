@@ -8,11 +8,9 @@ const cardsSlice = createSlice({
   reducers: {
     setCards: (state, action) => {
       state.cards = action.payload;
-      // console.log(state.cards)
     },
     addCard: (state, action) => {
       state.cards = [...state.cards, action.payload];
-      console.log(state.cards)
     },
   },
 });

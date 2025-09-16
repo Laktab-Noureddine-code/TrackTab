@@ -3,6 +3,7 @@ import cardModel from "../models/cardModel.js";
 import { categoryModel } from "../models/categoryModel.js";
 import { transactionModel } from "../models/transactionModel.js";
 import userModel from "../models/userModel.js";
+import jwt from "jsonwebtoken";
 
 export const getUser = async (req, res) => {
   try {
@@ -19,7 +20,7 @@ export const getUser = async (req, res) => {
 
     res.status(200).json({ success: true, user });
   } catch (err) {
-    res.status(500).json({ success: false, message: err });
+    res.status(500).json({ success: false, message: err.message });
   }
 };
 

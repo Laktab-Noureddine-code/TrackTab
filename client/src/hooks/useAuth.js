@@ -7,6 +7,7 @@ import {
 import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const useAuth = () => {
   axios.defaults.withCredentials = true;
@@ -26,9 +27,8 @@ const useAuth = () => {
           dispatch(setIsLoggedIn(false));
         }
       } catch (error) {
-        console.log(
-          "Auth check failed:",
-          error.response?.data?.message || error.message
+        toast.error(
+          error.response?.data?.message 
         );
         // User is not authenticated or token is invalid
         dispatch(setIsLoggedIn(false));

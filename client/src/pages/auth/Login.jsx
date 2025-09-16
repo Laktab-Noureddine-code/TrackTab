@@ -5,7 +5,6 @@ import {
   IconButton, 
   Checkbox, 
   FormControlLabel,
-  Button,
   Typography,
   Box
 } from "@mui/material";
@@ -13,7 +12,7 @@ import { Mail, Lock, Eye, EyeOff, ArrowRight } from "lucide-react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { setIsLoggedIn } from "@/redux/slices/authSlice";
+import { setIsLoggedIn, setUserData } from "@/redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { config } from "@/config";
 import AuthLeftSide from "./AuthLeftSide";
@@ -21,35 +20,60 @@ import AuthLeftSide from "./AuthLeftSide";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+
+  const [errors, setErrors] = useState({
+    email: "",
+  });
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const backendUrl = config.backendUrl;
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateInputs = () => {
+    let newErrors = { email: ""};
+    let isValid = true;
+
+    if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+      isValid = false;
+    }
+
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = async () => {
+    if (!validateInputs()) return;
+
     try {
       const { data } = await axios.post(
         `${backendUrl}/api/auth/login`,
-        formData
+        { ...formData, rememberMe }
       );
-      console.log(data);
+
       if (data.success && data.user) {
         dispatch(setIsLoggedIn(true));
+        dispatch(setUserData(data.user));
         navigate("/");
-        toast.success("Logged in successfuly");
+        toast.success("Logged in successfully");
       } else {
-        toast.error(data.message);
+        toast.error(data.message || "Login failed. Please try again.");
       }
     } catch (err) {
-      toast.error(err);
+      console.error("Login error:", err);
+      toast.error(err.response?.data?.message || "Something went wrong. Please try again.");
     }
   };
 
@@ -86,28 +110,9 @@ const Login = () => {
               placeholder="Enter your email"
               required
               variant="outlined"
-              sx={{
-                mb: 3,
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  "& fieldset": {
-                    borderColor: "#d1d5db",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#9ca3af",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#14b8a6",
-                    borderWidth: "2px",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#6b7280",
-                  "&.Mui-focused": {
-                    color: "#14b8a6",
-                  },
-                },
-              }}
+              error={!!errors.email}
+              helperText={errors.email}
+              sx={{ mb: 3 }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -128,27 +133,6 @@ const Login = () => {
               placeholder="Enter your password"
               required
               variant="outlined"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  "& fieldset": {
-                    borderColor: "#d1d5db",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#9ca3af",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#14b8a6",
-                    borderWidth: "2px",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#6b7280",
-                  "&.Mui-focused": {
-                    color: "#14b8a6",
-                  },
-                },
-              }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

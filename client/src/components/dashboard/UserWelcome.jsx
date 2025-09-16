@@ -23,6 +23,7 @@ export function UserWelcome() {
     (acc, item) => acc + item.amount,
     0
   );
+  console.log(user)
 
   return (
     <div className="space-y-1">
@@ -31,7 +32,7 @@ export function UserWelcome() {
         <CardContent className="">
           <div className="flex flex-col items-center text-center justify-center gap-1">
             <Avatar className="h-20 w-20">
-              <AvatarImage src="https://i.pinimg.com/736x/46/73/51/467351f4053889c931e22194ce4a7381.jpg" />
+              <AvatarImage src={user?.profile}/>
             </Avatar>
             <div>
               <p className="text-sm text-muted-foreground">Welcome back,</p>

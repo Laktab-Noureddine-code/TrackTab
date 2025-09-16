@@ -19,8 +19,9 @@ import useFetchCards from "./hooks/useFetchCards";
 const queryClient = new QueryClient();
 
 const App = () => {
+  
   useAuth();
-  useFetchCards()
+  useFetchCards();
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>

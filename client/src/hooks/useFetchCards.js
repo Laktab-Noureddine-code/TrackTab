@@ -23,7 +23,7 @@ function useFetchCards() {
       }
     };
     fetchCards();
-  }, [dispatch, backendUrl]);
+  }, [dispatch, backendUrl ]);
 }
 
 export default useFetchCards;

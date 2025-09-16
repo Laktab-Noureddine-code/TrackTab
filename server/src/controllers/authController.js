@@ -2,6 +2,7 @@ import userModel from "../models/userModel.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import categrySeeder from "../seeds/categrySeeder.js";
+import { cardSeeder } from "../seeds/cardSeeder.js";
 
 export const register = async (req, res) => {
   const { name, email, password } = req.body;
@@ -23,12 +24,14 @@ export const register = async (req, res) => {
       password: hashedPassword,
     });
     categrySeeder(user._id);
+    cardSeeder(user._id);
     // return user without password
     const userWithoutPassword = {
       id: user._id,
       name: user.name,
       email: user.email,
-    };
+      profile : user.profile,
+    };  
 
     // generate jwt token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -119,6 +122,7 @@ export const login = async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        profile : user.profile,
       },
     });
   } catch (e) {

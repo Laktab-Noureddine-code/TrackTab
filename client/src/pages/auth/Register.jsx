@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { 
-  TextField, 
-  InputAdornment, 
+import {
+  TextField,
+  InputAdornment,
   IconButton,
   Typography,
-  Box
+  Box,
 } from "@mui/material";
 import { Mail, Lock, Eye, EyeOff, ArrowRight, User } from "lucide-react";
 import axios from "axios";
@@ -12,7 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { config } from "@/config";
 import { useDispatch } from "react-redux";
-import { setIsLoggedIn } from "@/redux/slices/authSlice";
+import { setIsLoggedIn, setUserData } from "@/redux/slices/authSlice";
 import AuthLeftSide from "./AuthLeftSide";
 axios.defaults.withCredentials = true;
 
@@ -25,34 +25,65 @@ const Register = () => {
     password: "",
   });
 
-  const dispatch = useDispatch();
-  const { backendUrl } = config;
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const dispatch = useDispatch();
+  const backendUrl = config.backendUrl;
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const validateInputs = () => {
+    let newErrors = { name: "", email: "", password: "" };
+    let isValid = true;
+
+    if (!formData.name || formData.name.length < 3) {
+      newErrors.name = "Name must be at least 3 characters";
+      isValid = false;
+    }
+
+    if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Invalid email format";
+      isValid = false;
+    }
+
+    if (!formData.password || formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = async () => {
+    if (!validateInputs()) return;
+
     try {
-      if (formData.name && formData.email && formData.password) {
-        const { data } = await axios.post(
-          `${backendUrl}/api/auth/register`,
-          formData
-        );
-        if (data.success) {
-          dispatch(setIsLoggedIn(true));
-          navigate("/");
-          toast.success("Registration successful!");
-        } else {
-          toast.error(data.message || "Registration failed. Please try again.");
-        }
+      const { data } = await axios.post(
+        `${backendUrl}/api/auth/register`,
+        formData
+      );
+      console.log("Registration response:", data);
+      if (data.success) {
+        dispatch(setIsLoggedIn(true));
+        dispatch(setUserData(data.user));
+        navigate("/");
+        toast.success("Registration successful!");
       } else {
-        toast.error("Please fill all the fields.");
+        toast.error(data.message || "Registration failed. Please try again.");
       }
     } catch (err) {
       console.error("Registration error:", err);
+      toast.error("Something went wrong. Please try again later.");
     }
   };
 
@@ -88,28 +119,9 @@ const Register = () => {
               placeholder="Enter your full name"
               required
               variant="outlined"
-              sx={{
-                mb: 3,
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  "& fieldset": {
-                    borderColor: "#d1d5db",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#9ca3af",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#14b8a6",
-                    borderWidth: "2px",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#6b7280",
-                  "&.Mui-focused": {
-                    color: "#14b8a6",
-                  },
-                },
-              }}
+              error={!!errors.name}
+              helperText={errors.name}
+              sx={{ mb: 3 }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -130,28 +142,9 @@ const Register = () => {
               placeholder="Enter your email"
               required
               variant="outlined"
-              sx={{
-                mb: 3,
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  "& fieldset": {
-                    borderColor: "#d1d5db",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#9ca3af",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#14b8a6",
-                    borderWidth: "2px",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#6b7280",
-                  "&.Mui-focused": {
-                    color: "#14b8a6",
-                  },
-                },
-              }}
+              error={!!errors.email}
+              helperText={errors.email}
+              sx={{ mb: 3 }}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -172,27 +165,8 @@ const Register = () => {
               placeholder="Enter your password"
               required
               variant="outlined"
-              sx={{
-                "& .MuiOutlinedInput-root": {
-                  backgroundColor: "white",
-                  "& fieldset": {
-                    borderColor: "#d1d5db",
-                  },
-                  "&:hover fieldset": {
-                    borderColor: "#9ca3af",
-                  },
-                  "&.Mui-focused fieldset": {
-                    borderColor: "#14b8a6",
-                    borderWidth: "2px",
-                  },
-                },
-                "& .MuiInputLabel-root": {
-                  color: "#6b7280",
-                  "&.Mui-focused": {
-                    color: "#14b8a6",
-                  },
-                },
-              }}
+              error={!!errors.password}
+              helperText={errors.password}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -226,13 +200,13 @@ const Register = () => {
             Create Account
             <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
           </button>
-          
-          <Typography 
-            variant="body2" 
-            sx={{ 
-              textAlign: "center", 
+
+          <Typography
+            variant="body2"
+            sx={{
+              textAlign: "center",
               color: "#374151",
-              mt: 2 
+              mt: 2,
             }}
           >
             Already have an account?{" "}
