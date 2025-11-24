@@ -13,6 +13,13 @@ return new class extends Migration
     {
         Schema::create('cards', function (Blueprint $table) {
             $table->id();
+            $table->foreignId("user_id")->constrained();
+            $table->string("name");
+            $table->enum("type" ,['credit','debit','prepaid']);
+            $table->string("last_digits")->nullable();
+            $table->string("currency")->default("MAD");
+            $table->decimal("balance" ,8,2)->default(0);
+            $table->boolean("active")->default(false);
             $table->timestamps();
         });
     }

@@ -1,0 +1,25 @@
+User
+| Field      | Type            | Notes |
+| ---------- | --------------- | ----- |
+| id         | BIGINT PK       |       |
+| name       | string          |       |
+| email      | string (unique) |       |
+| password   | string          |       |
+| created_at | timestamp       |       |
+| updated_at | timestamp       |       |
+
+
+Card
+| Field       | Type                             | Notes                               |
+| ----------- | -------------------------------- | ----------------------------------- |
+| id          | BIGINT PK                        |                                     |
+| user_id     | BIGINT FK → users.id             |                                     |
+| name        | string                           | (ex: "CIH", "Attijari", "Payoneer") |
+| type        | enum('credit','debit','prepaid') | optional                            |
+| last_digits | string(4)                        | for display only                    |
+| currency    | string(3)                        | ex: MAD, USD, EUR                   |
+| balance     | decimal(12,2)                    | optional                            |
+| active      | boolean                          | default true                        |
+| created_at  | timestamp                        |                                     |
+| updated_at  | timestamp                        |                                     |
+

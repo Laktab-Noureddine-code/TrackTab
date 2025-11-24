@@ -3,25 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCardRequest;
-use App\Http\Requests\UpdateCardRequest;
 use App\Models\Card;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-class CardController extends Controller
+class CardController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+{
+    return [
+        new Middleware('auth:sanctum')
+    ];
+}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return Card::all();
     }
 
     /**
@@ -29,29 +31,27 @@ class CardController extends Controller
      */
     public function store(StoreCardRequest $request)
     {
-        //
+        $fields = $request->validated();
+
+        $card = $request->user()->cards()->create($fields);
+
+        return $card;
+
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Card $card)
+    public function show(string $id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Card $card)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCardRequest $request, Card $card)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -59,7 +59,7 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Card $card)
+    public function destroy(string $id)
     {
         //
     }
