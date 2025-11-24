@@ -23,3 +23,94 @@ Card
 | created_at  | timestamp                        |                                     |
 | updated_at  | timestamp                        |                                     |
 
+
+3. categories
+
+User-defined or default categories (Food, Transport, Bills…).
+| Field      | Type                     | Notes                            |
+| ---------- | ------------------------ | -------------------------------- |
+| id         | BIGINT PK                |                                  |
+| user_id    | BIGINT FK → users.id     | nullable (for global categories) |
+| name       | string                   |                                  |
+| icon       | string                   | optional                         |
+| type       | enum('expense','income') |                                  |
+| created_at | timestamp                |                                  |
+| updated_at | timestamp                |                                  |
+
+
+4. expenses
+
+Every expense transaction.
+| Field       | Type                      | Notes                     |
+| ----------- | ------------------------- | ------------------------- |
+| id          | BIGINT PK                 |                           |
+| user_id     | BIGINT FK → users.id      |                           |
+| card_id     | BIGINT FK → cards.id      |                           |
+| category_id | BIGINT FK → categories.id |                           |
+| amount      | decimal(12,2)             | positive number           |
+| currency    | string(3)                 | defaults to card currency |
+| title       | string                    | ex: "Groceries"           |
+| note        | text                      | optional                  |
+| spent_at    | date or datetime          | date of transaction       |
+| created_at  | timestamp                 |                           |
+| updated_at  | timestamp                 |                           |
+
+5. incomes
+
+If your app supports income tracking.
+| Field       | Type                        | Notes |
+| ----------- | --------------------------- | ----- |
+| id          | BIGINT PK                   |       |
+| user_id     | BIGINT FK                   |       |
+| card_id     | BIGINT FK                   |       |
+| category_id | BIGINT FK (type = "income") |       |
+| amount      | decimal(12,2)               |       |
+| currency    | string(3)                   |       |
+| title       | string                      |       |
+| note        | text                        |       |
+| received_at | datetime                    |       |
+| created_at  | timestamp                   |       |
+| updated_at  | timestamp                   |       |
+
+
+6. budgets (Optional but highly recommended)
+
+User sets a spending limit per category per month.
+| Field       | Type          | Notes |
+| ----------- | ------------- | ----- |
+| id          | BIGINT PK     |       |
+| user_id     | BIGINT FK     |       |
+| category_id | BIGINT FK     |       |
+| amount      | decimal(12,2) |       |
+| month       | integer       | 1–12  |
+| year        | integer       |       |
+| created_at  | timestamp     |       |
+| updated_at  | timestamp     |       |
+
+
+7. recurring_expenses (Optional)
+
+Netflix, rent, subscriptions…
+| Field         | Type                                      | Notes |
+| ------------- | ----------------------------------------- | ----- |
+| id            | BIGINT PK                                 |       |
+| user_id       | BIGINT FK                                 |       |
+| card_id       | BIGINT FK                                 |       |
+| category_id   | BIGINT FK                                 |       |
+| title         | string                                    |       |
+| amount        | decimal(12,2)                             |       |
+| frequency     | enum('daily','weekly','monthly','yearly') |       |
+| next_run_date | date                                      |       |
+| created_at    | timestamp                                 |       |
+| updated_at    | timestamp                                 |       |
+
+
+8. card_transactions (Optional)
+
+If you import transactions from the card provider or bank API.
+| Field       | Type      | Notes |
+| ----------- | --------- | ----- |
+| id          | BIGINT PK |       |
+| card_id     | BIGINT FK |       |
+| raw_data    | json      |       |
+| imported_at | timestamp |       |

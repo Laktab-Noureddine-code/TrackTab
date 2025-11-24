@@ -23,7 +23,7 @@ class CardController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return Card::all();
+        return response()->json(["cards" => Card::all()], 200);
     }
 
     /**
@@ -35,7 +35,7 @@ class CardController extends Controller implements HasMiddleware
 
         $card = $request->user()->cards()->create($fields);
 
-        return $card;
+        return response()->json(['card' => $card], 200);
     }
 
     /**
@@ -47,12 +47,19 @@ class CardController extends Controller implements HasMiddleware
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreCardRequest $request, string $id)
     {
         $fields = $request->validated();
 
-        $card = Card::find($id)->first();
-        return $card;
+        $card = Card::find($id);
+
+        if (!$card) {
+            return response()->json(["message" => "Card not found"], 404);
+        }
+
+        $card->update($fields);
+
+        return response()->json(["card", $card], 200);
     }
 
     /**
@@ -60,6 +67,12 @@ class CardController extends Controller implements HasMiddleware
      */
     public function destroy(string $id)
     {
-        //
+        $card = Card::find($id);
+        if (!$card) {
+            return response()->json(["message" => "Card not found"], 404);
+        }
+        $card->delete();
+
+        return response()->json(["message" => "Card deleted"], 200);
     }
 }
