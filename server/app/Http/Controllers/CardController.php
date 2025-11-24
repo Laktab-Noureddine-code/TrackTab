@@ -12,11 +12,11 @@ class CardController extends Controller implements HasMiddleware
 {
 
     public static function middleware(): array
-{
-    return [
-        new Middleware('auth:sanctum')
-    ];
-}
+    {
+        return [
+            new Middleware('auth:sanctum')
+        ];
+    }
 
     /**
      * Display a listing of the resource.
@@ -36,16 +36,12 @@ class CardController extends Controller implements HasMiddleware
         $card = $request->user()->cards()->create($fields);
 
         return $card;
-
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show(string $id) {}
 
 
     /**
@@ -53,7 +49,10 @@ class CardController extends Controller implements HasMiddleware
      */
     public function update(Request $request, string $id)
     {
-        //
+        $fields = $request->validated();
+
+        $card = Card::find($id)->first();
+        return $card;
     }
 
     /**

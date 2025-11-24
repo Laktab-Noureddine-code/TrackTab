@@ -31,9 +31,9 @@ class AuthController extends Controller
         // validate the request
         $userData = $request->validated();
 
-        $user = User::where("email" ,$userData->email);
+        $user = User::where("email" ,$userData["email"])->first();
 
-        if(!$user || !Hash::check($userData->password ,$user->password )){
+        if(!$user || !Hash::check($userData["password"] ,$user->password )){
             return ["message"=>"Invalid credentials."];
         }
 
