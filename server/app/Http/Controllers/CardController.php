@@ -24,6 +24,7 @@ class CardController extends Controller implements HasMiddleware
     public function index()
     {
         return response()->json(["cards" => Card::all()], 200);
+        
     }
 
     /**
